@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+
+  angular-ui:
+    image: docker/angular:12
+    build:
+      context: .
+      dockerfile: ./docker/angular/Dockerfile
+    ports:
+      - 4201:4201
+    links:
+      - postgres
+    container_name: angular-12
+    volumes:
+       - ./app-ui:/usr/src/app/app-ui # Map the container project to the local project.
+       - /usr/src/app/app-ui/node_modules       
+
+  postgres:
+    image: postgres:11
+    hostname: postgres
+    container_name: postgres-11
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+
+  pgadmin:
+    image: dpage/pgadmin4:5.3
+    ports:
+      - "80:80"
+    links: 
+      - postgres
+    container_name: pgadmin-4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    volumes:
+      - ./docker/pgadmin/pgadmin4.db:/var/lib/pgadmin/pgadmin4.db
