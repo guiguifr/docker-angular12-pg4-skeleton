@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   angular-ui:
-    image: docker/angular:12
+    image: personal/angular:12
     build:
       context: .
       dockerfile: ./docker/angular/Dockerfile
